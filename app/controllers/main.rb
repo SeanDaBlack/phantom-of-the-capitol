@@ -8,6 +8,19 @@ CongressForms::App.controller do
     render :index
   end
 
+  get :health do
+    content_type :json
+
+    begin
+      ActiveRecord::Base.connection.execute("SELECT 1")
+      status 200
+      {status: "ok", database: "ok"}.to_json
+    rescue StandardError
+      status 503
+      {status: "error", database: "unavailable"}.to_json
+    end
+  end
+
   before do
     Raven.tags_context web: true
   end

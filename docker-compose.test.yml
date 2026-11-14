@@ -1,10 +1,10 @@
-version: '2'
 services:
   test_app:
     build: .
     command: "true"
     depends_on:
-      - test_db
+      test_db:
+        condition: service_healthy
     environment:
       MYSQL_TEST_HOST: test_db
       MYSQL_TEST_USER: phantom_dc
@@ -30,3 +30,8 @@ services:
       MYSQL_DATABASE: phantom_dc_test
       MYSQL_USER: phantom_dc
       MYSQL_PASSWORD: changeme
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20

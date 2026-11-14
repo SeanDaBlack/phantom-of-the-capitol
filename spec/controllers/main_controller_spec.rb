@@ -4,6 +4,18 @@ require 'spec_helper'
 require 'thin'
 
 describe "Main controller" do
+  describe "GET /health" do
+    it "reports that the application and database are healthy" do
+      get '/health'
+
+      expect(last_response.status).to eq(200)
+      expect(JSON.load(last_response.body)).to eq(
+        "status" => "ok",
+        "database" => "ok"
+      )
+    end
+  end
+
   describe "running the Padrino app on an actual server" do
     before do
       Thread.new do
