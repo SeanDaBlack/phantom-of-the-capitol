@@ -1,8 +1,14 @@
 FROM ruby:2.4-slim-stretch
 
-MAINTAINER William Budington "bill@eff.org"
+LABEL maintainer="William Budington <bill@eff.org>"
 
-RUN apt-get update && \
+RUN sed -i \
+      -e 's|deb.debian.org/debian|archive.debian.org/debian|g' \
+      -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
+      -e '/stretch-updates/d' \
+      /etc/apt/sources.list && \
+  echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until && \
+  apt-get -o Acquire::Check-Valid-Until=false update && \
   apt-get install -y --no-install-recommends \
     build-essential \
     curl \
