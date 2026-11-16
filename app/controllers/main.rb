@@ -27,6 +27,12 @@ CongressForms::App.controller do
 
   before do
     response.headers['X-Backend-Hostname'] = Socket.gethostname
+
+    origin = request.env['HTTP_ORIGIN']
+    if ['http://localhost:8000', 'http://127.0.0.1:8000'].include?(origin)
+      response.headers['Access-Control-Allow-Origin'] = origin
+      response.headers['Vary'] = 'Origin'
+    end
   end
 
   post :'retrieve-form-elements' do

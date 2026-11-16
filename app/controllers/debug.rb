@@ -6,6 +6,12 @@ CongressForms::App.controller do
   before do
     content_type :json
 
+    origin = request.env['HTTP_ORIGIN']
+    if ['http://localhost:8000', 'http://127.0.0.1:8000'].include?(origin)
+      response.headers['Access-Control-Allow-Origin'] = origin
+      response.headers['Vary'] = 'Origin'
+    end
+
     response.headers['X-Backend-Hostname'] = Socket.gethostname
     halt 401, {status: "error", message: "You must provide a valid debug key to access this endpoint."}.to_json unless params.include? "debug_key" and params["debug_key"] == DEBUG_KEY
   end
