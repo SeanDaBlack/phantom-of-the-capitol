@@ -27,7 +27,7 @@ Capybara.default_max_wait_time = 5
 Capybara.register_driver :poltergeist do |app|
   options = {
     js_errors: false,
-    phantomjs_options: ['--ssl-protocol=TLSv1'],
+    phantomjs_options: ['--ssl-protocol=TLSv1.2'],
     url_blacklist: ENV.fetch('URL_BLACKLIST'){ '' }.split(',')
   }
 

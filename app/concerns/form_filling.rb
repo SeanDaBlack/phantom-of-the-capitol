@@ -44,7 +44,7 @@ module FormFilling
   def fill_out_form_with_capybara f, session=nil, starting_action: nil, &block
     session ||= Capybara::Session.new(:poltergeist)
     session.driver.options[:js_errors] = false
-    session.driver.options[:phantomjs_options] = ['--ssl-protocol=TLSv1']
+      session.driver.options[:phantomjs_options] = ['--ssl-protocol=TLSv1.2']
     form_fill_log(f, "begin")
 
     begin
